@@ -1,0 +1,108 @@
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <cmath>
+#include <vector>
+
+using namespace std;
+
+
+// code for leetcode is present inside this solution class so you need to write only that code at leetcode plateform
+// only these two function you have to write - 1. DFS() , 2. numIslands()
+class Solution{
+    public:
+
+
+    void DFS (int i , int j , int rows , int coln , vector<vector<bool>>& visited , vector<vector<char>>& grid ) {
+        if (i < 0 || j < 0 || i >= rows || j >= coln || visited[i][j] == true || grid[i][j] != '1') {
+            return;
+        }
+
+        visited[i][j] = true;
+
+        DFS(i-1 , j , rows , coln , visited , grid);
+        DFS(i+1 , j , rows , coln , visited , grid);
+        DFS(i , j-1 , rows , coln , visited , grid);
+        DFS(i , j+1 , rows , coln , visited , grid);
+    }
+
+    int numIslands(vector<vector<char>>& grid) {
+        int rows = grid.size();
+        int coln = grid[0].size();
+        vector<vector<bool>> visited(rows , vector<bool> (coln));
+        int count = 0;
+
+        for (int i = 0 ; i < rows ; i++) {
+            for (int j = 0 ; j < coln ; j++) {
+                if (visited[i][j] == false && grid[i][j] == '1'){
+                    count++;
+                    DFS(i , j , rows , coln , visited , grid);
+                }
+            }
+        }
+
+        return count;
+    }    
+};
+
+
+int main()
+{
+    int row , coln, edge;
+    cout << "Enter no. of rows , coln ,  and no. of edge in a graph: ";
+    cin >> row >> coln >> edge;
+
+
+    /*
+         0 1 2 3 4 5
+    0   [           ]
+    1   [           ]    
+    2   [           ]
+    3   [           ]               
+    4   [           ]
+           
+
+    horizontal no. represents coln and vertical no. represents rows
+    */
+  
+
+    vector<vector<char>> grid(coln , vector<char> (row));   
+    vector<vector<bool>> visited(coln , vector<bool> (row));
+
+
+    for(int i=0;i<edge;i++){
+        int v1 , v2;
+        cout << "Enter vertices for " << i+1 << " edge: ";
+        cin >> v1 >> v2;  
+
+        // for matrix form using 2D vector
+        grid[v1][v2] = '1';
+    }
+
+
+    // if you want to check then you can print our matrix form
+    cout << "Matrix form of graph" << endl;        // 1- represents that there is an edge btw vertices          // 0- represents that there is not an edge btw vertices
+    for(int i = 0 ; i < row ; i++){
+        for(int j = 0 ; j < coln ; j++){
+            cout << grid[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+
+    Solution s1;
+    int res = s1.numIslands(grid);
+
+    cout << "No. of graphs(islands) is: " << res << endl;
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
